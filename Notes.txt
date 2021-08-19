@@ -1,0 +1,78 @@
+* view some carts   https://dribbble.com/search/shopping%20cart    https://dribbble.com/shots/15550702-E-commerce-Mobile-App   
+https://dribbble.com/shots/15487383-Beauty-Product-Shop-App
+
+ Inside an object, if the key is a variable, has a space, special character, it MUST be in [],
+ the value can be a normal variable but not the key.
+ The bracket notation[] is used when the property name is an invalid identifier, starts with a number, contains symbols, has spaces, result of variables,
+ or the function keyword for example.
+
+ ****If we use dot notations on a variable it will look for that key and not read it as a variable so the variable will need to be in brackets,
+    because dot notations declare the object first then a key*************
+
+let key = 'price';
+object.key looks for object.key not object.price,
+ so if you use object[key] thn it looks for object.price
+
+***-> Also, if the object starts with a number, contains symbols, has spaces it must be in ' ' quotes
+const practice = {
+    'the title': 'Pasta',
+    src: 'pasta.jpg',
+    'the price' : 12.99,
+    incart: 0,
+    'the car': 3.99
+
+}
+console.log(practice['the title']) // pasta
+
+
+
+
+
+////////////////////////////////////////////////////////////////1
+const car = "the car";      
+
+const practice = {
+    title: 'Pasta',
+    src: 'pasta.jpg',
+    price: 12.99,
+    incart: 0,
+    car: 3.99
+
+}
+console.log(practice) 
+
+car: 3.99  ** no changes
+incart: 0
+price: 12.99
+src: "pasta.jpg"
+title: "Pasta"
+
+
+
+
+//////////////////////////////////////////////////////////////2
+
+const title = 'Car';
+const car = 'Nissan';
+
+const practice = {
+    title: 'Pasta',
+    src: 'pasta.jpg',
+    price: 12.99,
+    incart: 0,
+    [title]: car
+
+}
+
+console.log(practice)  
+
+Car: "Nissan" 
+incart: 0
+price: 12.99
+src: "pasta.jpg"
+title: "Pasta"
+
+
+
+
+/* JSON.stringify JSON.parse 
