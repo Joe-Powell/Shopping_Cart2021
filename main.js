@@ -99,7 +99,7 @@ function addItem(add) {
 }
 
 
-// add quantity to each
+// add quantity to each items card. invokes 2 times,  inside for loop and invokes when the page loads
 function addQuantitySpan() {
 
     let itemsStored = localStorage.getItem('items')
@@ -107,6 +107,7 @@ function addQuantitySpan() {
 
     if (itemsStored.Eggs) {
         document.querySelector('.quant1').innerHTML = itemsStored.Eggs.incart;
+        document.querySelector('.totalPriceSpan1').innerHTML = `$${itemsStored.Eggs.incart * itemsStored.Eggs.price}.00`;
     }
     if (itemsStored.Pasta) {
         document.querySelector('.quant2').innerHTML = itemsStored.Pasta.incart;
@@ -121,7 +122,7 @@ function addQuantitySpan() {
 
 }
 
-//addQuantitySpan()
+addQuantitySpan()
 
 // totalItems 
 function totalItems(item) {
