@@ -56,3 +56,9 @@ nav ul li {
     height: auto;
 
 }
+
+.card .totalPriceSpan {
+    display: block;
+    padding: 6px;
+    font-weight:bold;
+}

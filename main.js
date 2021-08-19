@@ -111,12 +111,15 @@ function addQuantitySpan() {
     }
     if (itemsStored.Pasta) {
         document.querySelector('.quant2').innerHTML = itemsStored.Pasta.incart;
+        document.querySelector('.totalPriceSpan2').innerHTML = `$${itemsStored.Pasta.incart * itemsStored.Pasta.price}.00`;
     }
     if (itemsStored.Salad) {
         document.querySelector('.quant3').innerHTML = itemsStored.Salad.incart;
+        document.querySelector('.totalPriceSpan3').innerHTML = `$${itemsStored.Salad.incart * itemsStored.Salad.price}.00`;
     }
     if (itemsStored.Tomatoes) {
         document.querySelector('.quant4').innerHTML = itemsStored.Tomatoes.incart;
+        document.querySelector('.totalPriceSpan4').innerHTML = `$${itemsStored.Tomatoes.incart * itemsStored.Tomatoes.price}.00`;
     }
 
 
