@@ -1,0 +1,2 @@
+
+bug fixed, addQuantitySpan() was giving error because-> if (itemsStored.Eggs){...} needed to be wrapped in if (itemsStored) {...}
