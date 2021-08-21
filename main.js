@@ -52,7 +52,7 @@ const trashCan = document.querySelectorAll('.fa-trash')
 
 
 
-
+// loops through buttons
 for (let i = 0; i < cards.length; i++) {
 
     img[i].src = `images/${items[i].src}`;
@@ -68,10 +68,11 @@ for (let i = 0; i < cards.length; i++) {
     })
 
     minusCircle[i].addEventListener('click', () => {
-        clickMinus(items[i])
+
         addQuantitySpan()
         totalItems(items[i], 'minus')
         totalPrice(items[i], 'minus')
+        clickMinus(items[i]) // needed to be below totalPrice because these both change incart inteference..
     })
 
 
@@ -110,12 +111,35 @@ function addItem(add) {
 
 
     }
+}
 
 
+
+
+
+
+
+
+// whenPageLoads
+function whenPageLoads() {
+
+    let totalItems = localStorage.getItem('totalItems')
+    let totalPrice = localStorage.getItem('totalPrice');
+    if (totalItems) {
+        document.querySelector('.totalItemsSpan').innerHTML = `Cart(${totalItems})`;
+        document.querySelector('.totalPriceSpan').innerHTML = `Total:$${totalPrice}`;
+    } else {
+        document.querySelector('.totalItemsSpan').innerHTML = '';
+        document.querySelector('.totalPriceSpan').innerHTML = '';
+
+    }
 
 
 
 }
+
+whenPageLoads();
+
 
 
 
@@ -153,6 +177,47 @@ addQuantitySpan()
 
 
 
+
+function totalPrice(item, action) {
+
+    let totalPrice = localStorage.getItem('totalPrice');
+    totalPrice = parseFloat(totalPrice)
+
+    if (action == 'minus') {
+        let items = localStorage.getItem('items')
+        items = JSON.parse(items)
+
+        if (items[item.title].incart > 0) {
+            localStorage.setItem('totalPrice', totalPrice - item.price)
+            let updatedTotalPrice = localStorage.getItem('totalPrice')
+            document.querySelector('.totalPriceSpan').innerHTML = ` Total:$${updatedTotalPrice} `;
+        }
+
+
+    }
+    else if (totalPrice) {
+
+        localStorage.setItem('totalPrice', totalPrice + item.price)
+        let updatedTotalPrice = localStorage.getItem('totalPrice')
+        document.querySelector('.totalPriceSpan').innerHTML = ` Total:$${updatedTotalPrice} `;
+    } else {
+
+        localStorage.setItem('totalPrice', item.price)
+        let updatedTotalPrice = localStorage.getItem('totalPrice')
+        document.querySelector('.totalPriceSpan').innerHTML = ` Total:$${updatedTotalPrice} `;
+    }
+
+
+
+}
+
+
+
+
+
+
+
+
 // totalItems 
 function totalItems(item, action) {
 
@@ -160,11 +225,15 @@ function totalItems(item, action) {
     totalItems = parseInt(totalItems)
 
     if (action == 'minus') {
-        if (totalItems && totalItems > 0) {
-            localStorage.setItem('totalItems', totalItems - 1)
-            let updatedItems = localStorage.getItem('totalItems')
-            updatedItems = parseInt(updatedItems)
-            document.querySelector('.totalItemsSpan').innerHTML = `Cart(${updatedItems})`;
+        if (totalItems) {
+            let items = localStorage.getItem('items')
+            items = JSON.parse(items)
+            if (items[item.title].incart > 0) {
+                localStorage.setItem('totalItems', totalItems - 1)
+                let updatedItems = localStorage.getItem('totalItems')
+                updatedItems = parseInt(updatedItems)
+                document.querySelector('.totalItemsSpan').innerHTML = `Cart(${updatedItems})`;
+            }
         }
     }
 
@@ -189,61 +258,12 @@ function totalItems(item, action) {
 
 
 
-// whenPageLoads
-function whenPageLoads() {
-
-    let totalItems = localStorage.getItem('totalItems')
-    let totalPrice = localStorage.getItem('totalPrice');
-    if (totalItems) {
-        document.querySelector('.totalItemsSpan').innerHTML = `Cart(${totalItems})`;
-        document.querySelector('.totalPriceSpan').innerHTML = `Total:$${totalPrice}`;
-    } else {
-        document.querySelector('.totalItemsSpan').innerHTML = '';
-        document.querySelector('.totalPriceSpan').innerHTML = '';
-
-    }
-
-
-
-}
-
-whenPageLoads();
-
-
 
 
 
 
 // totalPrice
 
-function totalPrice(item, action) {
-
-    let totalPrice = localStorage.getItem('totalPrice');
-    totalPrice = parseFloat(totalPrice)
-
-    if (action == 'minus') {
-        if (totalPrice > 0) {
-            localStorage.setItem('totalPrice', totalPrice - item.price)
-            let updatedTotalPrice = localStorage.getItem('totalPrice')
-            document.querySelector('.totalPriceSpan').innerHTML = ` Total:$${updatedTotalPrice} `;
-        }
-    }
-
-    else if (totalPrice) {
-
-        localStorage.setItem('totalPrice', totalPrice + item.price)
-        let updatedTotalPrice = localStorage.getItem('totalPrice')
-        document.querySelector('.totalPriceSpan').innerHTML = ` Total:$${updatedTotalPrice} `;
-    } else {
-
-        localStorage.setItem('totalPrice', item.price)
-        let updatedTotalPrice = localStorage.getItem('totalPrice')
-        document.querySelector('.totalPriceSpan').innerHTML = ` Total:$${updatedTotalPrice} `;
-    }
-
-
-
-}
 
 
 // click on plus
@@ -265,19 +285,19 @@ clickPlus()
 
 //click on minus
 function clickMinus(item) {
-    let itemsInCart = localStorage.getItem('items');
-    itemsInCart = JSON.parse(itemsInCart)
+    let items = localStorage.getItem('items');
+    items = JSON.parse(items)
 
-    if (itemsInCart && itemsInCart[item.title]) {
-        if (itemsInCart[item.title].incart > 0) {
-            console.log(itemsInCart[item.title].incart)
+    if (items && items[item.title]) {
+        if (items[item.title].incart > 0) {
+            console.log(items[item.title].incart)
 
-            itemsInCart = {
-                ...itemsInCart,
+            items = {
+                ...items,
             }
 
-            itemsInCart[item.title].incart = itemsInCart[item.title].incart - 1;
-            localStorage.setItem('items', JSON.stringify(itemsInCart))
+            items[item.title].incart = items[item.title].incart - 1;
+            localStorage.setItem('items', JSON.stringify(items))
 
         }
     }
