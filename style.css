@@ -31,6 +31,14 @@ nav ul li {
     padding: 10px;
 }
 
+nav .totals {
+    padding: 10px;
+}
+
+nav .totals span {
+    font-weight: bold;
+}
+
 
 
   /* Main Page */
@@ -61,8 +69,6 @@ nav ul li {
 
 }
 
-
-
 .itemPrice {
     padding:0 0 5px;
     font-weight:bold;
@@ -88,7 +94,7 @@ nav ul li {
 
 .quantifiers {
     display: inline-block;
-    
+    padding:4px 0 0 0 ;
 }
 
 
@@ -98,9 +104,18 @@ nav ul li {
     padding: 0 1px;
 }
 
-.card .totalPriceSpan {
+.card .totalPriceItemSpan {
     width: fit-content;
     display: inline-block;
-    padding: 4px 0 0 50%;
+    padding: 4px 0 0 30%;
     font-weight:bold;
+}
+
+.card .fa-trash {
+    display: none;
+    padding: 0 0 0 25px;
+}
+
+.activeTrash {
+    display: inline-block;
 }

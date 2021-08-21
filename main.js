@@ -43,7 +43,9 @@ const img = document.querySelectorAll('img');
 const itemPrice = document.querySelectorAll('.itemPrice');
 const btns = document.querySelectorAll('.btn');
 const plusSquare = document.querySelectorAll('.fa-plus-square');
+const minusCircle = document.querySelectorAll('.fa-minus-circle')
 const quantifiers = document.querySelectorAll('.quantifiers')
+const trashCan = document.querySelectorAll('.fa-trash')
 
 
 
@@ -63,6 +65,13 @@ for (let i = 0; i < cards.length; i++) {
         totalPrice(items[i])
         addQuantitySpan()
 
+    })
+
+    minusCircle[i].addEventListener('click', () => {
+        clickMinus(items[i])
+        addQuantitySpan()
+        totalItems(items[i], 'minus')
+        totalPrice(items[i], 'minus')
     })
 
 
@@ -104,13 +113,16 @@ function addItem(add) {
 
 
 
+
+
 }
 
 
 
 
 
-// add quantity to each items card. 2 places  btns[i].addEventListener and below
+// add quantity to each items card. 
+//3 places  btns[i].addEventListener ⇧ , minusCircle[j].addEventListener ⇩  and below
 function addQuantitySpan() {
 
     let itemsStored = localStorage.getItem('items')
@@ -118,48 +130,45 @@ function addQuantitySpan() {
     if (itemsStored) {
         if (itemsStored.Eggs) {
             document.querySelector('.quant1').innerHTML = itemsStored.Eggs.incart;
-            document.querySelector('.totalPriceSpan1').innerHTML = `$${itemsStored.Eggs.incart * itemsStored.Eggs.price}.00`;
+            document.querySelector('.totalPriceItemSpan1').innerHTML = `$${itemsStored.Eggs.incart * itemsStored.Eggs.price}.00`;
+
         }
         if (itemsStored.Pasta) {
             document.querySelector('.quant2').innerHTML = itemsStored.Pasta.incart;
-            document.querySelector('.totalPriceSpan2').innerHTML = `$${itemsStored.Pasta.incart * itemsStored.Pasta.price}.00`;
+            document.querySelector('.totalPriceItemSpan2').innerHTML = `$${itemsStored.Pasta.incart * itemsStored.Pasta.price}.00`;
         }
         if (itemsStored.Salad) {
             document.querySelector('.quant3').innerHTML = itemsStored.Salad.incart;
-            document.querySelector('.totalPriceSpan3').innerHTML = `$${itemsStored.Salad.incart * itemsStored.Salad.price}.00`;
+            document.querySelector('.totalPriceItemSpan3').innerHTML = `$${itemsStored.Salad.incart * itemsStored.Salad.price}.00`;
         }
         if (itemsStored.Tomatoes) {
             document.querySelector('.quant4').innerHTML = itemsStored.Tomatoes.incart;
-            document.querySelector('.totalPriceSpan4').innerHTML = `$${itemsStored.Tomatoes.incart * itemsStored.Tomatoes.price}.00`;
+            document.querySelector('.totalPriceItemSpan4').innerHTML = `$${itemsStored.Tomatoes.incart * itemsStored.Tomatoes.price}.00`;
         }
     }
 
 }
 
+addQuantitySpan()
 
-// click on plus
-function clickPlus() {
-    for (let j = 0; j < plusSquare.length; j++) {
-        plusSquare[j].addEventListener('click', () => {
-            console.log('clicked addMore')
-
-            btns[j].click()
-
-        })
-    }
-}
-
-addQuantitySpan() // must be after clickPlus() or gives error -- the clickPlus wont work
-clickPlus()
 
 
 // totalItems 
-function totalItems(item) {
+function totalItems(item, action) {
 
     let totalItems = localStorage.getItem('totalItems')
     totalItems = parseInt(totalItems)
 
-    if (totalItems) {
+    if (action == 'minus') {
+        if (totalItems && totalItems > 0) {
+            localStorage.setItem('totalItems', totalItems - 1)
+            let updatedItems = localStorage.getItem('totalItems')
+            updatedItems = parseInt(updatedItems)
+            document.querySelector('.totalItemsSpan').innerHTML = `Cart(${updatedItems})`;
+        }
+    }
+
+    else if (totalItems) {
         localStorage.setItem('totalItems', totalItems + 1)
 
         let updatedItems = localStorage.getItem('totalItems')
@@ -181,7 +190,6 @@ function totalItems(item) {
 
 
 // whenPageLoads
-
 function whenPageLoads() {
 
     let totalItems = localStorage.getItem('totalItems')
@@ -208,12 +216,20 @@ whenPageLoads();
 
 // totalPrice
 
-function totalPrice(item) {
+function totalPrice(item, action) {
 
     let totalPrice = localStorage.getItem('totalPrice');
     totalPrice = parseFloat(totalPrice)
 
-    if (totalPrice) {
+    if (action == 'minus') {
+        if (totalPrice > 0) {
+            localStorage.setItem('totalPrice', totalPrice - item.price)
+            let updatedTotalPrice = localStorage.getItem('totalPrice')
+            document.querySelector('.totalPriceSpan').innerHTML = ` Total:$${updatedTotalPrice} `;
+        }
+    }
+
+    else if (totalPrice) {
 
         localStorage.setItem('totalPrice', totalPrice + item.price)
         let updatedTotalPrice = localStorage.getItem('totalPrice')
@@ -230,10 +246,43 @@ function totalPrice(item) {
 }
 
 
+// click on plus
+function clickPlus() {
+    for (let j = 0; j < plusSquare.length; j++) {
+        plusSquare[j].addEventListener('click', () => {
+            //console.log('clicked addMore')
+
+            btns[j].click()
+
+        })
+    }
+}
+clickPlus()
 
 
 
 
+
+//click on minus
+function clickMinus(item) {
+    let itemsInCart = localStorage.getItem('items');
+    itemsInCart = JSON.parse(itemsInCart)
+
+    if (itemsInCart && itemsInCart[item.title]) {
+        if (itemsInCart[item.title].incart > 0) {
+            console.log(itemsInCart[item.title].incart)
+
+            itemsInCart = {
+                ...itemsInCart,
+            }
+
+            itemsInCart[item.title].incart = itemsInCart[item.title].incart - 1;
+            localStorage.setItem('items', JSON.stringify(itemsInCart))
+
+        }
+    }
+
+}
 
 
 
